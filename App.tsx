@@ -1,21 +1,26 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import React from "react";
+import { StatusBar } from 'expo-status-bar'
+import React from 'react'
+import { Platform, SafeAreaView, StyleSheet, Text, View } from 'react-native'
+import Hero from './components/Hero'
+import Navbar from './components/Navbar'
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+	return (
+		<SafeAreaView>
+			<View style={styles.container}>
+				<Navbar />
+				<Hero />
+			</View>
+		</SafeAreaView>
+	)
 }
 
+// get the height of the status bar on the device
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+	container: {
+		// really weak green, almost white
+		backgroundColor: '#f0f0f0',
+		minHeight: '100%',
+	},
+})
