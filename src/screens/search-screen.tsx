@@ -108,7 +108,7 @@ const SearchScreen = () => {
 									height: '100%',
 									position: 'absolute',
 									resizeMode: 'cover',
-									opacity: 0.7,
+									opacity: 0.5,
 									borderRadius: 7,
 								}}
 							/>

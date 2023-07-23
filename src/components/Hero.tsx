@@ -1,16 +1,11 @@
 import * as React from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native'
 import Button from './ui/button'
-
-const Hero = ({
-    navigation,
-}: {
-    navigation: any
-}) => {
+const Hero = ({ navigation }: { navigation: any }) => {
 	return (
 		<View style={styles.heroContainer}>
 			<Image
-				source={require('../assets/impact.png')}
+				source={require('../../assets/impact.png')}
 				style={{ width: '100%', height: '100%', position: 'absolute' }}
 			/>
 			<Text style={styles.heroTitle}>Bem vindo ao YouMovies</Text>
@@ -26,7 +21,7 @@ const Hero = ({
 				}}>
 				<Button
 					title='Começar a explorar'
-                    onPress={() => navigation.push('Search')}
+					onPress={() => navigation.push('Search')}
 				/>
 			</View>
 		</View>
