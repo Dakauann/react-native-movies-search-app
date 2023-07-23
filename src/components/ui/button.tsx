@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
-import { ButtonProps, Pressable, StyleSheet, Text } from 'react-native'
+import { ButtonProps, Pressable, StyleProp, StyleSheet, Text, ViewStyle } from 'react-native'
 
 export interface ButtonPropsWithVariant extends ButtonProps {
 	variant?: 'default' | 'outline' | 'ghost'
+	style?: StyleProp<ViewStyle>
 }
 
 export default function Button({
 	variant = 'default',
+	style,
 	...props
 }: ButtonPropsWithVariant) {
 	const { onPress, title = 'Save' } = props
@@ -47,6 +49,7 @@ export default function Button({
 		<Pressable
 			style={[
 				styles.button,
+				style,
 				{
 					backgroundColor: buttonBackgroundColor,
 					borderColor: borderColor,

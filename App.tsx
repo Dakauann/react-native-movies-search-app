@@ -1,6 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React from 'react'
+import { Text } from 'react-native'
 import HomeScreen from './src/screens/home-screen'
 import SearchScreen from './src/screens/search-screen'
 
@@ -23,7 +24,17 @@ export default function App() {
 						headerShown: false,
 					}}
 				/>
-				<Stack.Screen name='Search' component={SearchScreen} />
+				<Stack.Screen
+					name='Search'
+					component={SearchScreen}
+					options={{
+						headerRight: () => (
+							<Text style={{ color: 'white', fontSize: 16 }}>
+								You<Text style={{ color: 'red' }}>Movies</Text>
+							</Text>
+						),
+					}}
+				/>
 			</Stack.Navigator>
 		</NavigationContainer>
 	)
