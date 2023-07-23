@@ -1,26 +1,30 @@
-import { StatusBar } from 'expo-status-bar'
+import { NavigationContainer } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React from 'react'
-import { Platform, SafeAreaView, StyleSheet, Text, View } from 'react-native'
-import Hero from './components/Hero'
-import Navbar from './components/Navbar'
+import HomeScreen from './src/screens/home-screen'
+import SearchScreen from './src/screens/search-screen'
+
+const Stack = createNativeStackNavigator()
 
 export default function App() {
 	return (
-		<SafeAreaView>
-			<View style={styles.container}>
-				<Navbar />
-				<Hero />
-			</View>
-		</SafeAreaView>
+		<NavigationContainer>
+			<Stack.Navigator
+				screenOptions={{
+					headerStyle: {
+						backgroundColor: 'black',
+					},
+					headerTintColor: 'white',
+				}}>
+				<Stack.Screen
+					name='Início'
+					component={HomeScreen}
+					options={{
+						headerShown: false,
+					}}
+				/>
+				<Stack.Screen name='Search' component={SearchScreen} />
+			</Stack.Navigator>
+		</NavigationContainer>
 	)
 }
-
-// get the height of the status bar on the device
-
-const styles = StyleSheet.create({
-	container: {
-		// really weak green, almost white
-		backgroundColor: '#f0f0f0',
-		minHeight: '100%',
-	},
-})
