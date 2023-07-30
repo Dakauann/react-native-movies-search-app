@@ -21,7 +21,7 @@ const Hero = ({ navigation }: { navigation: any }) => {
 				}}>
 				<Button
 					title='Começar a explorar'
-					onPress={() => navigation.push('Search')}
+					onPress={() => navigation.push('Pesquisar')}
 				/>
 			</View>
 		</View>

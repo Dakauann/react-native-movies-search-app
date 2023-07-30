@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import { ButtonProps, Pressable, StyleProp, StyleSheet, Text, ViewStyle } from 'react-native'
+import { ButtonProps, Pressable, StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native'
 
 export interface ButtonPropsWithVariant extends ButtonProps {
 	variant?: 'default' | 'outline' | 'ghost'
 	style?: StyleProp<ViewStyle>
+	icon?: React.ReactNode
 }
 
 export default function Button({
@@ -58,6 +59,9 @@ export default function Button({
 			onPress={onPress}
 			onPressIn={handlePressIn}
 			onPressOut={handlePressOut}>
+			<View>
+				{props.icon && <View style={{ marginHorizontal: 8 }}>{props.icon}</View>}
+			</View>
 			<Text style={[styles.text, { color: textColor }]}>{title}</Text>
 		</Pressable>
 	)
@@ -71,6 +75,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 20,
 		borderRadius: 4,
 		borderWidth: 1,
+		flexDirection: 'row',
 	},
 	text: {
 		fontSize: 14,

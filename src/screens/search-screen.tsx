@@ -1,30 +1,20 @@
 import React from 'react'
 import {
 	ActivityIndicator,
+	FlatList,
 	Image,
 	ScrollView,
 	StyleSheet,
 	Text,
 	TextInput,
+	TouchableHighlight,
 	View,
 } from 'react-native'
+import Icon from 'react-native-vector-icons/AntDesign'
 import Button from '../components/ui/button'
+import Movie from '../types/movie'
 
-interface Movie {
-	id: number
-	original_language: string
-	original_title: string
-	title: string
-	overview: string
-	popularity: number
-	poster_path: string
-	backdrop_path: string
-	release_date: string
-	vote_average: number
-	vote_count: number
-}
-
-const SearchScreen = () => {
+const SearchScreen = ({ navigation }: { navigation: any }) => {
 	const [searchQuery, setSearchQuery] = React.useState<string>('')
 	const [movies, setmovies] = React.useState<Movie[]>([])
 	const [isLoading, setIsLoading] = React.useState<boolean>(false)
@@ -34,15 +24,14 @@ const SearchScreen = () => {
 			query,
 		)}&language=pt-BR&page=1&include_adult=true`
 
-		setIsLoading(true)
 		const response = await fetch(fetchUrl)
-		setIsLoading(false)
 		const data = await response.json()
-
+		setIsLoading(false)
 		setmovies(data.results)
 	}
 
 	React.useEffect(() => {
+		setIsLoading(true)
 		fetchMovies(searchQuery != '' ? searchQuery : 'Os vingadores')
 	}, [])
 
@@ -63,7 +52,7 @@ const SearchScreen = () => {
 				}}>
 				<TextInput
 					style={{
-						width: '80%',
+						width: '85%',
 						height: '100%',
 						padding: 10,
 						borderRadius: 7,
@@ -76,81 +65,139 @@ const SearchScreen = () => {
 					placeholder='Os vingadores'
 				/>
 				<Button
-					title='Pesquisar'
+					title=''
+					icon={<Icon name='search1' size={15} color={'white'} />}
 					style={{
 						height: 50,
 						borderRadius: 100,
+						marginLeft: 'auto',
 					}}
-					onPress={() => fetchMovies(searchQuery)}
+					onPress={() => {
+						setmovies([])
+						setIsLoading(true)
+						fetchMovies(searchQuery)
+					}}
 				/>
 			</View>
 
-			<ScrollView
-				contentContainerStyle={{
-					rowGap: 10,
-					flexDirection: 'row',
-					flexWrap: 'wrap',
-					padding: 10,
-					justifyContent: 'center',
-					paddingBottom: 50,
-				}}>
-				{isLoading ? (
-					<ActivityIndicator size='large' color='red' />
-				) : movies.length > 0 ? (
-					movies.map((movie) => (
-						<View key={movie.id} style={styles.container}>
-							<Image
-								source={{
-									uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
-								}}
-								style={{
-									width: '100%',
-									height: '100%',
-									position: 'absolute',
-									resizeMode: 'cover',
-									opacity: 0.5,
-									borderRadius: 7,
-								}}
-							/>
-							<Text style={styles.movieTitle}>{movie.title}</Text>
-							<Text style={styles.movieDescription}>
-								{movie.overview}
-							</Text>
-							<Text style={styles.movieLanguage}>pt-BR</Text>
-						</View>
-					))
-				) : (
-					<Text
-						style={{
-							color: 'white',
-							fontSize: 32,
-							fontWeight: 'bold',
-						}}>
-						Nenhum filme encontrado
-					</Text>
-				)}
-			</ScrollView>
+			{isLoading ? (
+				<ActivityIndicator
+					size='large'
+					color='red'
+					style={{ marginTop: 10 }}
+				/>
+			) : movies.length > 0 ? (
+				<FlatList
+					numColumns={3}
+					contentContainerStyle={{
+						gap: 2,
+						marginVertical: 20,
+						paddingBottom: 80,
+					}}
+					renderItem={({ item }) => (
+						<TouchableHighlight
+							onPress={() => {
+								navigation.navigate('Detalhes', {
+									movieId: item.id,
+								})
+							}}
+							key={item.id}
+							style={styles.container}>
+							<>
+								<View
+									style={{
+										height: '80%',
+										width: '100%',
+										justifyContent: 'center',
+										alignItems: 'center',
+									}}>
+									<Image
+										source={{
+											uri: `https://image.tmdb.org/t/p/w500${item.poster_path}`,
+										}}
+										style={{
+											width: '100%',
+											height: '100%',
+											position: 'absolute',
+											resizeMode: 'cover',
+											opacity: 0.5,
+											borderRadius: 7,
+										}}
+									/>
+									<View
+										style={{
+											width: '100%',
+											marginTop: 'auto',
+											flexDirection: 'row',
+											justifyContent: 'flex-start',
+											alignItems: 'baseline',
+										}}>
+										<Text style={styles.movieLanguage}>
+											pt-BR
+										</Text>
+										<Text
+											style={{
+												...styles.movieLanguage,
+												backgroundColor: 'transparent',
+												color: 'white',
+											}}>
+											{item.vote_average.toFixed(1)}
+											<Icon
+												name='star'
+												color={'yellow'}
+												size={10}
+											/>
+										</Text>
+									</View>
+								</View>
+								<View>
+									<Text
+										numberOfLines={2}
+										style={styles.movieTitle}>
+										{item.title}
+									</Text>
+								</View>
+							</>
+						</TouchableHighlight>
+					)}
+					data={movies.filter((movie) => movie.poster_path != null)}
+				/>
+			) : (
+				<Text
+					style={{
+						color: 'white',
+						fontSize: 32,
+						fontWeight: 'bold',
+						textAlign: 'center',
+					}}>
+					Nenhum filme encontrado
+				</Text>
+			)}
 		</View>
 	)
 }
 
 const styles = StyleSheet.create({
 	container: {
-		width: '50%',
-		minHeight: 270,
+		width: '33%',
+		height: 270,
 		borderRadius: 7,
 		alignItems: 'center',
 		paddingHorizontal: 10,
 		gap: 5,
+		justifyContent: 'center',
 	},
 	movieTitle: {
 		color: 'white',
-		fontSize: 20,
+		fontSize: 15,
+		height: 50,
 		fontWeight: 'bold',
 		textAlign: 'center',
+		justifyContent: 'center',
 		textShadowColor: 'rgba(0, 0, 0, 0.75)',
 		textShadowOffset: { width: -1, height: 1 },
 		textShadowRadius: 10,
+		marginTop: 'auto',
 	},
 	movieDescription: {
 		color: 'white',
@@ -164,11 +211,14 @@ const styles = StyleSheet.create({
 		color: 'white',
 		fontSize: 10,
 		alignSelf: 'baseline',
-		margin: 5,
+		margin: 3,
 		backgroundColor: 'red',
-		padding: 5,
-		borderRadius: 7,
-		marginTop: 'auto',
+		padding: 4,
+		borderRadius: 5,
+		textShadowColor: 'rgba(0, 0, 0, 0.75)',
+		textShadowOffset: { width: -1, height: 1 },
+		textShadowRadius: 10,
+		gap: 4,
 	},
 })
 

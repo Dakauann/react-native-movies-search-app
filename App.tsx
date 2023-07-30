@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React from 'react'
 import { Text } from 'react-native'
 import HomeScreen from './src/screens/home-screen'
+import MovieDetails from './src/screens/movie-details'
 import SearchScreen from './src/screens/search-screen'
 
 const Stack = createNativeStackNavigator()
@@ -25,8 +26,19 @@ export default function App() {
 					}}
 				/>
 				<Stack.Screen
-					name='Search'
+					name='Pesquisar'
 					component={SearchScreen}
+					options={{
+						headerRight: () => (
+							<Text style={{ color: 'white', fontSize: 16 }}>
+								You<Text style={{ color: 'red' }}>Movies</Text>
+							</Text>
+						),
+					}}
+				/>
+				<Stack.Screen
+					name='Detalhes'
+					component={MovieDetails}
 					options={{
 						headerRight: () => (
 							<Text style={{ color: 'white', fontSize: 16 }}>

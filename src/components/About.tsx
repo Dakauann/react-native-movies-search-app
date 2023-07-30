@@ -31,6 +31,16 @@ const About = () => {
 					utilizamos uma api externa chamada the moviesDb.
 				</Text>
 			</View>
+			<View style={styles.aboutItem}>
+				<Text style={styles.aboutItemTitle}>
+					Qual o intuitio do YouMovies?
+				</Text>
+				<Text style={styles.aboutItemText}>
+					O YouMovies foi criado para fins de demonstração de
+					conhecimento em React Native / Desenvolvimento de modo
+					geral.
+				</Text>
+			</View>
 		</View>
 	)
 }
